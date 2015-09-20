@@ -1,0 +1,95 @@
+#! python3
+from tkinter import *
+from random import *
+from functools import partial
+from tkinter import messagebox
+
+class Game:
+        #initiates game
+	def __init__(self):
+		self.root = Tk()
+
+		self.TEXT_start = 'Minesweeper'
+		self.TEXT_lose = 'You have exploded!'
+		self.TEXT_win = 'You have sweeped all the mines!'
+
+		self.frame = Frame(width = 574, height = 574)
+		self.frame.grid(columnspan = 30, rowspan = 31)
+
+		self.minex = []
+		self.miney = []
+
+		self.click_minex = []
+		self.click_miney = []
+
+		self.rangex = 0
+
+		self.clickx = 0
+		self.clicky = 0
+
+		self.k = 0
+		self.q = 0
+		self.mine_count = 0
+
+		self.blank = PhotoImage(file = 'C:\\Python Programs\\blank.gif')
+		self.miss = PhotoImage(file = 'C:\\Python Programs\\miss.gif')
+		self.hit = PhotoImage(file = 'C:\\Python Programs\\hit.gif')
+
+
+		for i in range(0,30):
+			for j in range(0,30):
+				self.button = Button(width = 15, height = 15, padx = 2, pady = 2, image = self.blank, command = partial(self.click, j, i))
+				self.button.grid(row = i, column = j)
+
+		self.mine_place()
+		print(self.minex)
+		print(self.miney)
+
+		self.root.mainloop()
+		
+        #places mines on the field
+	def mine_place(self):
+		for i in range(0,15):
+			self.minex.append(randint(0,29))
+			self.miney.append(randint(0,29))
+
+        #what happens on click 
+	def click(self, j, i):
+		print(j, i)
+		self.check_hit(i, j)
+		if self.mine_count == (30 * 30) - 15:
+			self.title['text'] = self.TEXT_win
+
+        #if click is hit
+	def check_hit(self, i, j):
+		while self.k < 15:
+			if j == self.minex[self.k] and i == self.miney[self.k]:
+				self.k += 15
+				self.end()
+			else:
+				self.button = Button(image = self.miss)
+				self.button.grid(row = i, column = j)
+				self.k += 1
+				self.mine_count += 1
+				#self.check_left(i, j)
+		self.k = 0
+
+        #execute if click is hit
+	def end(self):
+		for i in range(0,30):
+			for j in range(0,30):
+				self.button = Button(image = self.blank, state =DISABLED)
+				self.button.grid(row = i, column = j)
+		for i, j in zip(self.miney, self.minex):
+			self.button = Button(image = self.hit)
+			self.button.grid(row = i, column = j)
+		self.message = messagebox.showwarning('MINE', self.TEXT_lose)
+
+##	def check_left(self, i, j):
+##		while self.q < 15:
+##			if (j-1) != self.minex[self.q] and i != self.miney[self.q]:
+##				self.button = Button(image = self.miss)
+##				self.button.grid(row = 1, column = (j-1))
+		self.q = 0
+
+app = Game()
