@@ -1,4 +1,4 @@
-//Fib function only
+//Fib function only - recursive
 int fib(int n)
 {
   if ( n <= 1 )
