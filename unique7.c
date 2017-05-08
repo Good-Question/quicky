@@ -23,14 +23,14 @@ void get_unique(int int_arr[10], int ret_arr[NUM]){
 		int pass = 0;
 		for(j = 0; j < NUM; j++){
 			if(ret_arr[j] == 0){
-				break;
+				break; //A number hasn't been put here
 			}
 			if(ret_arr[j] == int_arr[i]){
 				pass++;
-				break;
+				break; //A number has been put here but it's the same as the one we're looking at (we can move onto the next)
 			}
 			else
-				continue;
+				continue; //A number has been put here and we haven't seen it yet
 		}
 		if(pass)
 			continue;
